@@ -1,46 +1,78 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-// Define the base URL for your API
-const API_URL = 'http://localhost:5000/api'; // Replace with your API URL
+const API_URL = 'http://localhost:5000/api'; 
 
-// Create an axios instance with default settings
-const axiosInstance = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// User-related API endpoints
+const getToken = (): string | null => {
+  return localStorage.getItem('token');
+};
+
+const setAuthHeader = (): void => {
+  const token = getToken();
+  if (token) {
+    axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete axiosInstance.defaults.headers['Authorization']; 
+  }
+};
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+
 export const api = {
-  // Register a new user
-  registerUser: async (username: string, email: string, password: string) => {
+  registerUser: async (username: string, email: string, password: string): Promise<User> => {
     try {
-      const response = await axiosInstance.post('/users', {
+      const response: AxiosResponse<User> = await axiosInstance.post('/users/register', {
         username,
         email,
         password,
       });
-      return response.data;
-    } catch (error) {
-      console.error('Error registering user:', error);
+      return response.data; 
+    } catch (error: any) {
+      console.error('Error registering user:', error.response?.data || error.message);
       throw error;
     }
   },
 
-  // User login
+
   loginUser: async (email: string, password: string) => {
+  try {
+    const response = await axiosInstance.post('/users/login', {
+      email,
+      password,
+    });
+    return response.data; // Backend zwróci token
+  } catch (error: any) {
+    console.error('Error logging in user:', error.response?.data || error.message);
+    throw error;
+  }
+  },
+
+
+  fetchUserProfile: async (): Promise<User> => {
+    setAuthHeader(); 
     try {
-      const response = await axiosInstance.post('/users/login', {
-        email,
-        password,
-      });
+      const response: AxiosResponse<User> = await axiosInstance.get('/users/profile');
       return response.data;
-    } catch (error) {
-      console.error('Error logging in user:', error);
+    } catch (error: any) {
+      console.error('Error fetching user profile:', error.response?.data || error.message);
       throw error;
     }
   },
-}
+
+  logoutUser: (): void => {
+    localStorage.removeItem('token');
+    setAuthHeader(); 
+  },
+};
 
 export default api;

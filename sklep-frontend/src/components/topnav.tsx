@@ -6,12 +6,10 @@ export default function TopNavbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo sklepu */}
         <div className="navbar-logo">
           <Link to="/">PlantShop</Link>
         </div>
 
-        {/* Linki nawigacyjne */}
         <ul className="navbar-links">
           <li>
             <Link to="/">Home</Link>
@@ -22,10 +20,8 @@ export default function TopNavbar() {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
-          {/* Możesz dodać inne linki, jak login, koszyk itp. */}
         </ul>
 
-        {/* Przyciski logowania i koszyka */}
         <div className="navbar-actions">
           <Link to="/login" className="navbar-button">
             Login
