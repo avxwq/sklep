@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Generators;
 using sklep.Models;
+using sklep.Models.DTOs;
+using sklep.Services;
 
 namespace sklep.Controllers
 {
@@ -14,49 +19,52 @@ namespace sklep.Controllers
     public class UsersController : ControllerBase
     {
         private readonly SklepContext _context;
+        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly TokenService _tokenService;
 
-        public UsersController(SklepContext context)
+        public UsersController(SklepContext context, TokenService tokenService, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _tokenService = tokenService;
+            _passwordHasher = passwordHasher;
         }
 
-        // POST: api/Users/Register
-        [HttpPost("Register")]
-        public async Task<ActionResult<User>> Register([FromBody] User user)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] Register model)
         {
-            // Check if the email already exists
-            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
-            {
-                return BadRequest("Email already in use.");
-            }
+            if (_context.Users.Any(u => u.Email == model.Email))
+                return BadRequest("User already exists.");
 
-            // Store user with plain-text password (not secure)
+            var user = new User
+            {
+                Username = model.Username,
+                Email = model.Email
+            };
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return Ok(new { Message = "Registration successful" });
         }
 
-        // POST: api/Users/Login
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] User loginUser)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] Login model)
         {
-            // Check if a user with the provided email exists
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == loginUser.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+                return Unauthorized("Invalid credentials.");
 
-            if (user == null || user.Password != loginUser.Password)
-            {
-                return Unauthorized("Invalid email or password.");
-            }
+            // Verify the password using ASP.NET Core's PasswordHasher
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
 
-            // Login successful
-            return Ok(new
-            {
-                Message = "Login successful",
-                UserId = user.Id,
-                Username = user.Username
-            });
+            if (result == PasswordVerificationResult.Failed)
+                return Unauthorized("Invalid credentials.");
+
+            var token = _tokenService.GenerateToken(user);
+
+            return Ok(new { Token = token });
         }
 
         // GET: api/Users

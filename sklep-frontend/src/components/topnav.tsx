@@ -18,7 +18,7 @@ export default function TopNavbar() {
             <Link to="/shop">Produkty</Link>
           </li>
           <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/contact">Kontakt</Link>
           </li>
         </ul>
 
