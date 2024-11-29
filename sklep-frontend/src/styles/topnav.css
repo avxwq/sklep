@@ -15,18 +15,24 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
+  margin: 0;
+  padding: 20;
 }
-
 .navbar-logo a {
-  text-decoration: none;
-  color: #fff;
+    text-decoration: none;
+    color: #fff;
+    margin: 0;
+    padding: 20;
 }
 
 .navbar-links {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: solid;
+    list-style-type: none;
+    margin: 0;
+    padding: 20;
 }
 
 .navbar-links li {
@@ -44,7 +50,10 @@
 }
 
 .navbar-actions {
-  display: flex;
+    display: flex;
+    font-weight: bold;
+    padding: 20;
+    margin-left: auto; /* Wyrównanie do prawej */
 }
 
 .navbar-button {
@@ -68,4 +77,10 @@
   .navbar-links {
     margin-top: 10px;
   }
+}
+.logo {
+    margin-right: 8px;
+    width: 30px;
+    margin: 0;
+    padding: 20;
 }

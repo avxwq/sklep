@@ -6,7 +6,8 @@ export default function TopNavbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="navbar-logo">
+              <div className="navbar-logo">
+              <img src="/icon.png" className="logo" />
           <Link to="/">PlantShop</Link>
         </div>
 
