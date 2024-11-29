@@ -1,7 +1,7 @@
-// RegisterForm.tsx
 import React, { useState } from 'react';
+import { useUserStorage } from '../../services/UserStorage'; // Importuj hook kontekstu
 import { api } from '../../api/api';
-import '../../styles/LoginRegister.css';  // Import the updated CSS file
+import '../../styles/LoginRegister.css';  // Importuj CSS
 
 export default function RegisterForm() {
   const [username, setUsername] = useState<string>('');
@@ -10,16 +10,24 @@ export default function RegisterForm() {
   const [success, setSuccess] = useState<string>('');
   const [error, setError] = useState<string>('');
 
+  // Uzyskaj dostęp do funkcji z UserStorageContext
+  const { login } = useUserStorage();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuccess('');
     setError('');
 
     try {
+      // Wywołanie API do rejestracji
       const data = await api.registerUser(username, email, password);
-      setSuccess(`User registered: ${data.username}`);
+      setSuccess(`Zarejestrowano użytkownika: ${data.username}`);
+
+      // Po udanej rejestracji, od razu logujemy użytkownika
+      login(data.token);  // Zapisanie tokena w stanie globalnym
+      localStorage.setItem('token', data.token);  // Opcjonalnie zapisanie tokena w localStorage
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.response?.data?.message || 'Rejestracja nie powiodła się');
     }
   };
 
