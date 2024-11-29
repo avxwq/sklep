@@ -1,16 +1,13 @@
+// LoginForm.tsx
 import React, { useState } from 'react';
-import { useUserStorage } from '../../services/UserStorage'; // Importuj hook kontekstu
 import { api } from '../../api/api';
-import '../../styles/LoginRegister.css';  // Importuj CSS
+import '../../styles/LoginRegister.css';  // Import the updated CSS file
 
 export default function LoginForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [error, setError] = useState<string>('');
-
-  // Uzyskaj dostęp do funkcji i stanu z UserStorageContext
-  const { login } = useUserStorage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,15 +16,10 @@ export default function LoginForm() {
 
     try {
       const data = await api.loginUser(email, password);
-      setSuccess('Zalogowano pomyślnie');
-
-      // Użyj funkcji login z kontekstu, aby zapisać token
-      login(data.token);
-
-      // Możesz również zapisać token w localStorage, jeśli chcesz
+      setSuccess('Login successful');
       localStorage.setItem('token', data.token);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Nie udało się zalogować');
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
