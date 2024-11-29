@@ -12,10 +12,10 @@ export default function TopNavbar() {
 
         <ul className="navbar-links">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">Strona główna</Link>
           </li>
           <li>
-            <Link to="/shop">Shop</Link>
+            <Link to="/shop">Produkty</Link>
           </li>
           <li>
             <Link to="/contact">Contact</Link>
@@ -24,10 +24,10 @@ export default function TopNavbar() {
 
         <div className="navbar-actions">
           <Link to="/login" className="navbar-button">
-            Login
+            Zaloguj się
           </Link>
           <Link to="/cart" className="navbar-button">
-            Cart
+            Koszyk
           </Link>
         </div>
       </div>

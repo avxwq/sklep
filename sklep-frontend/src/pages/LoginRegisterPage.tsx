@@ -21,7 +21,7 @@ export default function LoginRegister() {
   if (isLoggedIn) {
     return (
       <div className="container">
-        <h2>You are already logged in!</h2>
+        <h2>Jesteś już zalogowany!</h2>
         {/* Optionally, you can redirect or show a dashboard here */}
       </div>
     );
@@ -38,13 +38,13 @@ export default function LoginRegister() {
       <div>
         {isLogin ? (
           <p>
-            Don’t have an account? 
-            <button className="switch-btn" onClick={() => setIsLogin(false)}>Register</button>
+            Nie posiadasz jeszcze konta?
+            <button className="switch-btn" onClick={() => setIsLogin(false)}>Zarejestruj się</button>
           </p>
         ) : (
           <p>
-            Already have an account? 
-            <button className="switch-btn" onClick={() => setIsLogin(true)}>Login</button>
+            Posiadasz już konto? 
+            <button className="switch-btn" onClick={() => setIsLogin(true)}>Zaloguj się</button>
           </p>
         )}
       </div>

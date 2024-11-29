@@ -25,7 +25,7 @@ export default function LoginForm() {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Zaloguj się</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
@@ -37,7 +37,7 @@ export default function LoginForm() {
           />
         </div>
         <div>
-          <label>Password:</label>
+          <label>Hasło:</label>
           <input
             type="password"
             value={password}
@@ -47,7 +47,7 @@ export default function LoginForm() {
         </div>
         {success && <p className="success">{success}</p>}
         {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
+        <button type="submit">Zaloguj się</button>
       </form>
     </div>
   );

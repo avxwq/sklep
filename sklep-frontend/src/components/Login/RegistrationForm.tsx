@@ -25,10 +25,10 @@ export default function RegisterForm() {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Zarejestruj się</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
+          <label>Nazwa użytkownika:</label>
           <input
             type="text"
             value={username}
@@ -37,7 +37,7 @@ export default function RegisterForm() {
           />
         </div>
         <div>
-          <label>Email:</label>
+          <label>Adres email:</label>
           <input
             type="email"
             value={email}
@@ -46,7 +46,7 @@ export default function RegisterForm() {
           />
         </div>
         <div>
-          <label>Password:</label>
+          <label>Hasło:</label>
           <input
             type="password"
             value={password}
@@ -56,7 +56,7 @@ export default function RegisterForm() {
         </div>
         {success && <p className="success">{success}</p>}
         {error && <p className="error">{error}</p>}
-        <button type="submit">Register</button>
+        <button type="submit">Zarejestruj się</button>
       </form>
     </div>
   );
