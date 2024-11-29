@@ -5,7 +5,7 @@ interface UserStorageContextType {
   isLoggedIn: boolean;
   login: (token: string) => void;
   logout: () => void;
-  cartItems: string[]; 
+  cartItems: string[]; // You can use an object if items have more properties (like price, quantity)
   addToCart: (item: string) => void;
   removeFromCart: (item: string) => void;
 }
@@ -17,18 +17,19 @@ export default function UserStorage({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<string[]>([]);
 
+  // Check if the user is logged in when the component mounts
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token); 
+    setIsLoggedIn(!!token); // Set logged-in status based on token
 
     const storedCart = localStorage.getItem('cartItems');
     if (storedCart) {
-      setCartItems(JSON.parse(storedCart)); 
+      setCartItems(JSON.parse(storedCart)); // Load cart items from localStorage
     }
   }, []);
 
   const login = (token: string) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', token); // Save token to localStorage
     setIsLoggedIn(true);
   };
 
@@ -67,6 +68,7 @@ export default function UserStorage({ children }: { children: ReactNode }) {
   );
 }
 
+// Hook to access context
 export function useUserStorage(): UserStorageContextType {
   const context = React.useContext(UserStorageContext);
   if (!context) {
