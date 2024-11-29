@@ -1,8 +1,9 @@
+// RegisterForm.tsx
 import React, { useState } from 'react';
-import { api } from '../../api/api'; 
-import TopNavbar from '../topnav';
+import { api } from '../../api/api';
+import '../../styles/LoginRegister.css';  // Import the updated CSS file
 
-export default function Register() {
+export default function RegisterForm() {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -24,7 +25,6 @@ export default function Register() {
 
   return (
     <div>
-      <TopNavbar />
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -54,8 +54,8 @@ export default function Register() {
             required
           />
         </div>
-        {success && <p style={{ color: 'green' }}>{success}</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p className="success">{success}</p>}
+        {error && <p className="error">{error}</p>}
         <button type="submit">Register</button>
       </form>
     </div>

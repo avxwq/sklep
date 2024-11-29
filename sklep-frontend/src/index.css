@@ -1,0 +1,8 @@
+body {
+  background-color: #121212; /* Dark background color */
+  color: white; /* Light text color */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}

@@ -1,7 +1,9 @@
+// LoginForm.tsx
 import React, { useState } from 'react';
-import { api } from '../../api/api'; 
+import { api } from '../../api/api';
+import '../../styles/LoginRegister.css';  // Import the updated CSS file
 
-export default function Login() {
+export default function LoginForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
@@ -43,8 +45,8 @@ export default function Login() {
             required
           />
         </div>
-        {success && <p style={{ color: 'green' }}>{success}</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p className="success">{success}</p>}
+        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>
