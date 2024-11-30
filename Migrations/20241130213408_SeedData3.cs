@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace sklep.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedData2 : Migration
+    public partial class SeedData3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -162,30 +162,53 @@ namespace sklep.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Indoor" },
-                    { 2, "Outdoor" },
-                    { 3, "Succulents" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Email", "PasswordHash", "Username" },
-                values: new object[,]
-                {
-                    { 1, "john@example.com", "hashedpassword123", "john_doe" },
-                    { 2, "jane@example.com", "hashedpassword456", "jane_doe" }
-                });
+                values: new object[] { 1, "Indoor Plants" });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price", "StockQuantity" },
                 values: new object[,]
                 {
-                    { 1, 1, "A beautiful indoor plant.", "https://example.com/ficus.jpg", "Ficus", 49.99m, 20 },
-                    { 2, 2, "A lovely outdoor flower.", "https://example.com/rose.jpg", "Rose", 29.99m, 15 },
-                    { 3, 3, "A hardy succulent plant.", "https://example.com/aloe_vera.jpg", "Aloe Vera", 19.99m, 30 }
+                    { 1, 1, "Description for plant 1", "http://localhost:5000/productimg/fikus.jpg", "Plant 1", 1.5m, 10 },
+                    { 2, 1, "Description for plant 2", "http://localhost:5000/productimg/fikus.jpg", "Plant 2", 3m, 10 },
+                    { 3, 1, "Description for plant 3", "http://localhost:5000/productimg/fikus.jpg", "Plant 3", 4.5m, 10 },
+                    { 4, 1, "Description for plant 4", "http://localhost:5000/productimg/fikus.jpg", "Plant 4", 6m, 10 },
+                    { 5, 1, "Description for plant 5", "http://localhost:5000/productimg/fikus.jpg", "Plant 5", 7.5m, 10 },
+                    { 6, 1, "Description for plant 6", "http://localhost:5000/productimg/fikus.jpg", "Plant 6", 9m, 10 },
+                    { 7, 1, "Description for plant 7", "http://localhost:5000/productimg/fikus.jpg", "Plant 7", 10.5m, 10 },
+                    { 8, 1, "Description for plant 8", "http://localhost:5000/productimg/fikus.jpg", "Plant 8", 12m, 10 },
+                    { 9, 1, "Description for plant 9", "http://localhost:5000/productimg/fikus.jpg", "Plant 9", 13.5m, 10 },
+                    { 10, 1, "Description for plant 10", "http://localhost:5000/productimg/fikus.jpg", "Plant 10", 15m, 10 },
+                    { 11, 1, "Description for plant 11", "http://localhost:5000/productimg/fikus.jpg", "Plant 11", 16.5m, 10 },
+                    { 12, 1, "Description for plant 12", "http://localhost:5000/productimg/fikus.jpg", "Plant 12", 18m, 10 },
+                    { 13, 1, "Description for plant 13", "http://localhost:5000/productimg/fikus.jpg", "Plant 13", 19.5m, 10 },
+                    { 14, 1, "Description for plant 14", "http://localhost:5000/productimg/fikus.jpg", "Plant 14", 21m, 10 },
+                    { 15, 1, "Description for plant 15", "http://localhost:5000/productimg/fikus.jpg", "Plant 15", 22.5m, 10 },
+                    { 16, 1, "Description for plant 16", "http://localhost:5000/productimg/fikus.jpg", "Plant 16", 24m, 10 },
+                    { 17, 1, "Description for plant 17", "http://localhost:5000/productimg/fikus.jpg", "Plant 17", 25.5m, 10 },
+                    { 18, 1, "Description for plant 18", "http://localhost:5000/productimg/fikus.jpg", "Plant 18", 27m, 10 },
+                    { 19, 1, "Description for plant 19", "http://localhost:5000/productimg/fikus.jpg", "Plant 19", 28.5m, 10 },
+                    { 20, 1, "Description for plant 20", "http://localhost:5000/productimg/fikus.jpg", "Plant 20", 30m, 10 },
+                    { 21, 1, "Description for plant 21", "http://localhost:5000/productimg/fikus.jpg", "Plant 21", 31.5m, 10 },
+                    { 22, 1, "Description for plant 22", "http://localhost:5000/productimg/fikus.jpg", "Plant 22", 33m, 10 },
+                    { 23, 1, "Description for plant 23", "http://localhost:5000/productimg/fikus.jpg", "Plant 23", 34.5m, 10 },
+                    { 24, 1, "Description for plant 24", "http://localhost:5000/productimg/fikus.jpg", "Plant 24", 36m, 10 },
+                    { 25, 1, "Description for plant 25", "http://localhost:5000/productimg/fikus.jpg", "Plant 25", 37.5m, 10 },
+                    { 26, 1, "Description for plant 26", "http://localhost:5000/productimg/fikus.jpg", "Plant 26", 39m, 10 },
+                    { 27, 1, "Description for plant 27", "http://localhost:5000/productimg/fikus.jpg", "Plant 27", 40.5m, 10 },
+                    { 28, 1, "Description for plant 28", "http://localhost:5000/productimg/fikus.jpg", "Plant 28", 42m, 10 },
+                    { 29, 1, "Description for plant 29", "http://localhost:5000/productimg/fikus.jpg", "Plant 29", 43.5m, 10 },
+                    { 30, 1, "Description for plant 30", "http://localhost:5000/productimg/fikus.jpg", "Plant 30", 45m, 10 },
+                    { 31, 1, "Description for plant 31", "http://localhost:5000/productimg/fikus.jpg", "Plant 31", 46.5m, 10 },
+                    { 32, 1, "Description for plant 32", "http://localhost:5000/productimg/fikus.jpg", "Plant 32", 48m, 10 },
+                    { 33, 1, "Description for plant 33", "http://localhost:5000/productimg/fikus.jpg", "Plant 33", 49.5m, 10 },
+                    { 34, 1, "Description for plant 34", "http://localhost:5000/productimg/fikus.jpg", "Plant 34", 51m, 10 },
+                    { 35, 1, "Description for plant 35", "http://localhost:5000/productimg/fikus.jpg", "Plant 35", 52.5m, 10 },
+                    { 36, 1, "Description for plant 36", "http://localhost:5000/productimg/fikus.jpg", "Plant 36", 54m, 10 },
+                    { 37, 1, "Description for plant 37", "http://localhost:5000/productimg/fikus.jpg", "Plant 37", 55.5m, 10 },
+                    { 38, 1, "Description for plant 38", "http://localhost:5000/productimg/fikus.jpg", "Plant 38", 57m, 10 },
+                    { 39, 1, "Description for plant 39", "http://localhost:5000/productimg/fikus.jpg", "Plant 39", 58.5m, 10 },
+                    { 40, 1, "Description for plant 40", "http://localhost:5000/productimg/fikus.jpg", "Plant 40", 60m, 10 }
                 });
 
             migrationBuilder.CreateIndex(
