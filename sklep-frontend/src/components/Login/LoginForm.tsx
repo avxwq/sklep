@@ -14,7 +14,6 @@ export default function LoginForm() {
         e.preventDefault();
         setSuccess('');
         setError('');
-
         try {
             const data = await api.loginUser(email, password);
             setSuccess('Login successful');
@@ -25,7 +24,7 @@ export default function LoginForm() {
                  token: data.token,
                  name: email,
             }));
-        } catch (err: any) {
+       } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed');
         }
     };

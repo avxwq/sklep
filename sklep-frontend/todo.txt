@@ -1,0 +1,2 @@
+[] - Zupdatowac zeby login byl po username nie po email
+[] 

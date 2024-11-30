@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Product.css'; // Import stylów dla strony produktów
+import '../styles/Product.css'; // Import stylï¿½w dla strony produktï¿½w
 import Footer from "../components/footer";
 import ProductList from "../components/ProductForm";
+import CategoryList from '../components/CategoryList';
 
 export default function ProductPage() {
     return (
         <div>
-            <ProductList />
+            <CategoryList />
             <Footer />
         </div>
     );  

@@ -11,8 +11,8 @@ using sklep.Models;
 namespace sklep.Migrations
 {
     [DbContext(typeof(SklepContext))]
-    [Migration("20241129165316_database-init")]
-    partial class databaseinit
+    [Migration("20241130205332_SeedData2")]
+    partial class SeedData2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,23 @@ namespace sklep.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Indoor"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Outdoor"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Succulents"
+                        });
                 });
 
             modelBuilder.Entity("sklep.Models.Order", b =>
@@ -135,6 +152,10 @@ namespace sklep.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -150,6 +171,38 @@ namespace sklep.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "A beautiful indoor plant.",
+                            ImageUrl = "https://example.com/ficus.jpg",
+                            Name = "Ficus",
+                            Price = 49.99m,
+                            StockQuantity = 20
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            Description = "A lovely outdoor flower.",
+                            ImageUrl = "https://example.com/rose.jpg",
+                            Name = "Rose",
+                            Price = 29.99m,
+                            StockQuantity = 15
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 3,
+                            Description = "A hardy succulent plant.",
+                            ImageUrl = "https://example.com/aloe_vera.jpg",
+                            Name = "Aloe Vera",
+                            Price = 19.99m,
+                            StockQuantity = 30
+                        });
                 });
 
             modelBuilder.Entity("sklep.Models.User", b =>
@@ -162,7 +215,7 @@ namespace sklep.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -173,6 +226,22 @@ namespace sklep.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "john@example.com",
+                            PasswordHash = "hashedpassword123",
+                            Username = "john_doe"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "jane@example.com",
+                            PasswordHash = "hashedpassword456",
+                            Username = "jane_doe"
+                        });
                 });
 
             modelBuilder.Entity("sklep.Models.Cart", b =>
@@ -263,8 +332,7 @@ namespace sklep.Migrations
 
             modelBuilder.Entity("sklep.Models.User", b =>
                 {
-                    b.Navigation("Cart")
-                        .IsRequired();
+                    b.Navigation("Cart");
 
                     b.Navigation("Orders");
                 });

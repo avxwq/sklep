@@ -38,6 +38,13 @@ export default function TopNavbar() {
           <Link to="/cart" className="navbar-button">
             Koszyk
           </Link>
+          {user.isLoggedIn ? (
+          <Link to="/logout" className="navbar-button">
+            Wyloguj się
+          </Link>
+          ) : (
+              <></>
+          )}
         </div>
       </div>
     </nav>

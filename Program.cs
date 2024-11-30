@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using sklep.Models;
 using sklep.Services;
 using System.Text;
+using sklep.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,10 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -58,6 +63,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+};
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -69,5 +80,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();
