@@ -2,14 +2,20 @@
 .navbar {
   background-color: #2a9d8f; /* Background color for navbar */
   padding: 10px 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-container {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
+.navbar-container {
+    width: 100%;
+    max-width: 2000px; /* Mo¿esz dostosowaæ, aby navbar nie by³ zbyt szeroki */
+    display: flex;
+    justify-content: space-between; /* Ustawienie loga i linków po lewej oraz przycisków po prawej */
+    align-items: center;
+}
+
 
 .navbar-logo {
   font-size: 1.5rem;
@@ -51,9 +57,7 @@
 
 .navbar-actions {
     display: flex;
-    font-weight: bold;
-    padding: 20;
-    margin-left: auto; /* Wyrównanie do prawej */
+    align-items: center;
 }
 
 .navbar-button {
@@ -70,7 +74,7 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1080px) {
   .navbar-container {
     flex-direction: column;
   }

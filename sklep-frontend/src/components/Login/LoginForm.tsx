@@ -1,54 +1,72 @@
-// LoginForm.tsx
 import React, { useState } from 'react';
 import { api } from '../../api/api';
-import '../../styles/LoginRegister.css';  // Import the updated CSS file
+import '../../styles/LoginRegister.css'; // Import stylów
 
 export default function LoginForm() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
-  const [error, setError] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [success, setSuccess] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSuccess('');
-    setError('');
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSuccess('');
+        setError('');
 
-    try {
-      const data = await api.loginUser(email, password);
-      setSuccess('Login successful');
-      localStorage.setItem('token', data.token);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-  };
+        try {
+            const data = await api.loginUser(email, password);
+            setSuccess('Login successful');
+            localStorage.setItem('token', data.token);
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Login failed');
+        }
+    };
 
-  return (
-    <div>
-      <h2>Zaloguj się</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    const handleRegisterRedirect = () => {
+        window.location.href = '/register'; // Przekierowanie na stronę rejestracji
+    };
+
+    return (
+        <div className="login-container">
+                <div className="background-panel">
+                    <div className="login-panel">
+                        <div className="text">Zaloguj się</div>
+                        <div className="underline"></div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <div className="form-row">
+                                    <img src="/mail.png" alt="Email Icon" className="input-icon" />
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Adres email"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <div className="form-row">
+                                    <img src="/padlock.png" alt="Password Icon" className="input-icon" />
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Hasło"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            {success && <p className="success">{success}</p>}
+                            {error && <p className="error">{error}</p>}
+                            <button type="submit">Zaloguj się</button>
+                        </form>                   
+                    </div>
+                    
+                </div>
         </div>
-        <div>
-          <label>Hasło:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Zaloguj się</button>
-      </form>
-    </div>
-  );
+    );
 }
+
+
+

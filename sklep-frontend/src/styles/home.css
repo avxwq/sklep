@@ -1,7 +1,7 @@
 ﻿.home {
     height: 100vh; /* Pełna wysokość ekranu */
     background-color: cadetblue;
-    background-image: url('/tlo.png'); /* Ścieżka do obrazu tła */
+    background-image: url('/tlologin.jpg'); /* Ścieżka do obrazu tła */
     background-size: cover; /* Dopasowanie tła */
     background-position: center; /* Wyśrodkowanie tła */
     display: flex;

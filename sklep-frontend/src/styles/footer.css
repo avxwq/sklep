@@ -9,6 +9,7 @@ body {
     text-align: center;
     text-decoration: solid;
     color: #fff;
+    height:auto;
 }
 .logo {
     margin-right: 8px;
