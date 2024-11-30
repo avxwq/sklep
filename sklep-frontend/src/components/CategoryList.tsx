@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import '../styles/CategoryList.css'; // Make sure to create the CSS file
 
 interface Category {
   id: number;
@@ -36,12 +37,12 @@ export default function CategoryList() {
   }
 
   return (
-    <div>
+    <div className="category-list-container">
       <h1>Categories</h1>
-      <ul>
+      <ul className="category-list">
         {categories.map((category) => (
-          <li key={category.id}>
-            <Link to={`/category/${category.id}`}>{category.name}</Link>
+          <li key={category.id} className="category-item">
+            <Link to={`/category/${category.id}`} className="category-link">{category.name}</Link>
           </li>
         ))}
       </ul>

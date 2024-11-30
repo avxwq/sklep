@@ -1,0 +1,26 @@
+.category-list-container {
+  display: flex;
+  flex-direction: column; /* Stack the categories vertically */
+  width: 200px; /* Fixed width for the sidebar */
+  padding: 20px;
+}
+
+.category-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.category-item {
+  margin-bottom: 10px;
+}
+
+.category-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.category-link:hover {
+  color: #007bff;
+}
+/* CategoryList.css */
