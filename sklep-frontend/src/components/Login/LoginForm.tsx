@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { api } from '../../api/api';
 import '../../styles/LoginRegister.css'; // Import stylów
+import { useUser } from "../../services/userContext";
 
 export default function LoginForm() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const { user, setUser } = useUser();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,6 +19,12 @@ export default function LoginForm() {
             const data = await api.loginUser(email, password);
             setSuccess('Login successful');
             localStorage.setItem('token', data.token);
+            setUser((prev) => ({
+                ...prev,isLoggedIn:true,
+                 cartItems: [{ id: 1, name: "Plant A", quantity: 1 }],
+                 token: data.token,
+                 name: email,
+            }));
         } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed');
         }

@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from '../components/Login/LoginForm'; // Your Login component
 import RegisterForm from '../components/Login/RegistrationForm'; // Your Register component
 import '../styles/LoginRegister.css';  // Import the updated CSS file
+import { useUser } from '../services/userContext';
 
 export default function LoginRegister() {
     const [isLogin, setIsLogin] = useState<boolean>(true);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const { user } = useUser();
 
     // Check if the user is logged in (token exists in localStorage)
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const logged = user.isLoggedIn;
+        if (logged) {
             setIsLoggedIn(true);  // User is logged in
         } else {
             setIsLoggedIn(false); // User is not logged in
@@ -21,7 +23,6 @@ export default function LoginRegister() {
         return (
             <div className="container">
                 <h2>Jesteś już zalogowany!</h2>
-                {/* Optionally, you can redirect or show a dashboard here */}
             </div>
         );
     }

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';  // Importujemy Link do nawigacji
 import '../styles/topnav.css'
+import { useUser } from '../services/userContext';
 
 export default function TopNavbar() {
+  const { user } = useUser();
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -22,11 +24,17 @@ export default function TopNavbar() {
             <Link to="/contact">Kontakt</Link>
           </li>
         </ul>
-
         <div className="navbar-actions">
-          <Link to="/login" className="navbar-button">
-            Zaloguj się
-          </Link>
+          {/* Dynamically show login or profile link */}
+          {user.isLoggedIn ? (
+            <Link to="/profile" className="navbar-button">
+              Profil
+            </Link>
+          ) : (
+            <Link to="/login" className="navbar-button">
+              Zaloguj się
+            </Link>
+          )}
           <Link to="/cart" className="navbar-button">
             Koszyk
           </Link>
