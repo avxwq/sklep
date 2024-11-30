@@ -5,7 +5,6 @@ import ContactPage from '../pages/ContactPage';
 import ProductList from '../pages/ProductPage';
 import ProductPage from '../pages/ProductPage';
 import CartPage from '../components/cart';
-import CategoryProducts from '../components/CategoryProducts';
 
 const routes: RouteObject[] = [
   {
@@ -27,10 +26,6 @@ const routes: RouteObject[] = [
   {
         path: '/cart',
         element: <CartPage />,
-  },
-  {
-    path: '/category/:categoryId',
-    element: <CategoryProducts />,  // The route for category products
   },
 ];
 

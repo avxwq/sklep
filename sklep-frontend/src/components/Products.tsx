@@ -26,7 +26,7 @@ export default function Product({ products }: ProductListProps) {
       <ul className="product-list">
         {products.map((product) => (
           <li key={product.id} className="product-item">
-            <img src={product.imageUrl} alt={product.name} className="product-image" />
+            <img src={product.imageUrl} alt={product.name} className="product-image" loading="lazy" />
             <div className="product-info">
               <h2 className="product-name">{product.name}</h2>
               <p className="product-description">{product.description}</p>
