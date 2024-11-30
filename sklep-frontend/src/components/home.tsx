@@ -1,8 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';  // Importujemy Link do nawigacji
-import '../styles/home.css'
+import { useNavigate } from 'react-router-dom'; // Importujemy useNavigate do nawigacji
+import '../styles/home.css';
 
-export default function TopNavbar() {
+export default function Home() {
+    const navigate = useNavigate(); // Hook do obs³ugi nawigacji
+
+    const handleExploreClick = () => {
+        navigate('/shop'); // Przekierowanie do widoku /shop
+        console.log("Explore button clicked");
+    };
+
     return (
         <div className="home">
             <div className="home-overlay">
@@ -10,7 +17,9 @@ export default function TopNavbar() {
                 <p className="home-description">
                     Discover our lush collection of indoor and outdoor plants.
                 </p>
-                <button className="home-button">Explore Now</button>
+                <button className="home-button" onClick={handleExploreClick}>
+                    Explore Now
+                </button>
             </div>
         </div>
     );

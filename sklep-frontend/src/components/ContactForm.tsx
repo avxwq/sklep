@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { api } from '../../api/api';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet'; // importujemy leaflet
+import 'leaflet/dist/leaflet.css'; // Wymagane style Leaflet
 import '../styles/ContactPage.css'; // Import stylów
+
 export default function ContactPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -26,30 +29,35 @@ export default function ContactPage() {
         setMessage('');
     };
 
+    const position = [53.116989, 23.146364]; 
+
     return (
         <div className="contact-container">
             <div className="contact-info">
-                <h1>Skontaktuj sie z nami!</h1>
+                <h1 className="contact-header">Skontaktuj sie z nami!</h1>
                 <p>Masz pytania? Chcialbys porozmawiac o naszych roslinach? Skontaktuj sie z nami!</p>
 
                 <div className="contact-details">
-                    <p><strong>Adres:</strong> Ul. Roslinna 7, 15-777 Bialystok</p>
+                    <p><strong>Adres:</strong> Ul. Wiejska 45a, 15-351 Bialystok</p>
                     <p><strong>Email:</strong> kontakt@plantshop.pl</p>
                     <p><strong>Telefon:</strong> +48 123 456 789</p>
                 </div>
 
                 <h3>Znajdz nas na mapie:</h3>
-                {/* Przyk³adowa mapa */}
-                <div className="map">
-                    <iframe
-                        title="Mapa"
-                        width="500"
-                        height="400"
-                        frameBorder="0"
-                        style={{ border: 0 }}
-                        src="https://www.google.com/maps/embed/v1/place?q=Ul.%20Ro%C5%9Blinna%207,%2000-123%20Warszawa&key=YOUR_GOOGLE_MAPS_API_KEY"
-                        allowFullScreen
-                    ></iframe>
+                <div className="map" style={{ height: '400px', width: '100%' }}>
+                    <MapContainer center={position} zoom={15} style={{ height: '100%', width: '100%' }}>
+                        {/* Wstawiamy OpenStreetMap jako warstwê */}
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        {/* Dodajemy marker */}
+                        <Marker position={position}>
+                            <Popup>
+                                To jest nasza lokalizacja w Bia³ymstoku!
+                            </Popup>
+                        </Marker>
+                    </MapContainer>
                 </div>
             </div>
 
