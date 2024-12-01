@@ -31,7 +31,7 @@ export default function CartPage() {
                 const data = await api.fetchUserCart(userId);
                 setCartItems(data.cartItems);
                 setTotalValue(data.totalValue);
-            } catch (error) {
+            } catch (err : any) {
                 console.error('Failed to fetch data');
             }
         };
@@ -66,12 +66,17 @@ export default function CartPage() {
 
         try {
             const response = await api.placeOrder(userId);
+            if (response.status === 400){
+                toast.error('Brak wystarczającej ilości w magazynie!');
+                return;
+            }
             toast.success('Zamówienie złożone pomyślnie!');
             const data = await api.fetchUserCart(userId);
             setCartItems(data.cartItems);
             setTotalValue(data.totalValue);
         } catch (error: any) {
             console.error('Error placing order:', error.response?.data || error.message);
+            toast.error('Brak wystarczającej ilości w magazynie!');
             setErrorMessage('Error placing order. Please try again later.');
         } finally {
             setLoading(false);

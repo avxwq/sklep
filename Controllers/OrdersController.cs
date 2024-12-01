@@ -42,6 +42,18 @@ namespace sklep.Controllers
             if (user.Cart == null || !user.Cart.CartItems.Any())
                 return BadRequest("Cart is empty.");
 
+            foreach (var cartItem in user.Cart.CartItems)
+            {
+                var product = await _context.Products
+                    .FirstOrDefaultAsync(p => p.Id == cartItem.ProductId);
+
+                if (product == null)
+                    return BadRequest($"Product with ID {cartItem.ProductId} not found.");
+
+                if (product.StockQuantity < cartItem.Quantity)
+                    return BadRequest($"Insufficient stock for product: {product.Name}. Available stock: {product.StockQuantity}, requested quantity: {cartItem.Quantity}.");
+            }
+
             var totalPrice = user.Cart.CartItems.Sum(ci => ci.Quantity * ci.Product.Price);
 
             var order = new Order

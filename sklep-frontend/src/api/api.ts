@@ -103,7 +103,7 @@ export const api = {
             const response = await axiosInstance.get(`/orders/${userId}/orders`);
             return response.data;
         } catch (error: any) {
-            console.error('Error removing item from cart', error.response?.data || error.message);
+            console.error('Error getting orders item from cart', error.response?.data || error.message);
             throw error;
         }
     },

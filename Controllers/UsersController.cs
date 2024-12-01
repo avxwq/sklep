@@ -124,7 +124,7 @@ namespace sklep.Controllers
             var user = await _context.Users
                 .Include(u => u.Cart)
                 .ThenInclude(c => c.CartItems)
-                .ThenInclude(ci => ci.Product) // Ensures Product is included
+                .ThenInclude(ci => ci.Product)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
