@@ -82,3 +82,24 @@ h1 {
     .add-to-cart-button:hover {
         background-color: #1e8449;
     }
+.product-page-container {
+    display: flex;
+    gap: 20px; /* Odstęp między komponentami */
+    justify-content: flex-start; /* Wyrównanie do lewej */
+    align-items: flex-start; /* Wyrównanie komponentów w pionie */
+    padding: 20px;
+}
+
+    .product-page-container > * {
+        flex: 1; /* Komponenty zajmują równą przestrzeń */
+    }
+
+.product-display {
+    flex: 3; /* Produktom przypisujemy większą część przestrzeni */
+}
+
+.category-list {
+    flex: 1; /* Kategoria zajmuje mniejszą przestrzeń */
+    max-width: 250px; /* Maksymalna szerokość dla kategorii */
+}
+
