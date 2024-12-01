@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CategoryList from "../components/CategoryList";
 import Product from "../components/Products"; 
+import "../styles/Product.css";
 import axios from 'axios';
 interface Category {
   id: number;
@@ -38,16 +39,18 @@ export default function ProductPage() {
     }
   };
 
-  return (
-    <div>
-      <CategoryList onCategorySelect={handleCategorySelect} />
-      {loading ? (
-        <div>Loading products...</div>
-      ) : error ? (
-        <div>{error}</div>
-      ) : (
-        <Product products={products} />
-      )}
-    </div>
-  );
+    return (
+        <div className="product-page-container">
+            <CategoryList onCategorySelect={handleCategorySelect} />
+            <div className="product-display">
+                {loading ? (
+                    <div>Loading products...</div>
+                ) : error ? (
+                    <div>{error}</div>
+                ) : (
+                    <Product products={products} />
+                )}
+            </div>
+        </div>
+    );
 }
