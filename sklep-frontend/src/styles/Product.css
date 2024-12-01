@@ -63,6 +63,12 @@ h1 {
     margin-bottom: 15px;
 }
 
+.product-quantity {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
 .add-to-cart-button {
     background-color: #27ae60;
     color: white;

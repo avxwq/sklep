@@ -23,6 +23,7 @@ export default function LoginForm() {
                  cartItems: [{ id: 1, name: "Plant A", quantity: 1 }],
                  token: data.token,
                  name: email,
+                 id: data.userId,
             }));
        } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed');

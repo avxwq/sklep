@@ -43,13 +43,14 @@ export default function CategoryList({ onCategorySelect }: CategoryListProps) {
     <div className="category-list-container">
       <h1>Categories</h1>
       <ul className="category-list">
-        {categories.map((category) => (
-          <li key={category.id} className="category-item">
-            <button 
-              onClick={() => onCategorySelect(category.id)} 
-              className="category-link">
-              {category.name}
-            </button>
+          {categories.map((category) => (
+          <li 
+            key={category.id} 
+            className="category-item"
+            onClick={() => onCategorySelect(category.id)} 
+            role="button" 
+          >
+            {category.name}
           </li>
         ))}
       </ul>

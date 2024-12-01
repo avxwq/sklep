@@ -56,7 +56,6 @@ namespace sklep.Controllers
             if (user == null)
                 return Unauthorized("Invalid credentials.");
 
-            // Verify the password using ASP.NET Core's PasswordHasher
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
 
             if (result == PasswordVerificationResult.Failed)
@@ -64,8 +63,98 @@ namespace sklep.Controllers
 
             var token = _tokenService.GenerateToken(user);
 
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, UserId = user.Id });
         }
+
+        [HttpPost("{userId}/addToCart")]
+        public async Task<IActionResult> AddToCart(int userId, [FromBody] ProductDto productDto)
+        {
+            if (productDto == null || productDto.ProductId <= 0 || productDto.Quantity <= 0)
+                return BadRequest("Invalid product or quantity.");
+
+            var user = await _context.Users
+                .Include(u => u.Cart)
+                .ThenInclude(c => c.CartItems)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound("User not found.");
+
+            if (user.Cart == null)
+            {
+                user.Cart = new Cart { UserId = userId };
+                _context.Carts.Add(user.Cart);
+            }
+
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productDto.ProductId);
+            if (product == null)
+                return NotFound("Product not found.");
+
+            if (product.StockQuantity < productDto.Quantity)
+                return BadRequest("Insufficient stock.");
+
+            var cartItem = user.Cart.CartItems.FirstOrDefault(ci => ci.ProductId == productDto.ProductId);
+
+            if (cartItem == null)
+            {
+                cartItem = new CartItem
+                {
+                    CartId = user.Cart.Id,
+                    ProductId = product.Id,
+                    Quantity = productDto.Quantity
+                };
+                user.Cart.CartItems.Add(cartItem);
+            }
+            else
+            {
+                cartItem.Quantity += productDto.Quantity;
+            }
+
+            product.StockQuantity -= productDto.Quantity;
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Item added to cart.");
+        }
+
+        [HttpGet("{userId}/cart")]
+        public async Task<IActionResult> GetCart(int userId)
+        {
+            // Retrieve the user and include their cart with cart items and products
+            var user = await _context.Users
+                .Include(u => u.Cart)
+                .ThenInclude(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound("User not found.");
+
+            if (user.Cart == null || !user.Cart.CartItems.Any())
+                return Ok(new { Message = "Cart is empty", CartItems = new List<object>() });
+
+            // Map cart items to a DTO for the frontend
+            var cartItems = user.Cart.CartItems.Select(ci => new
+            {
+                ProductId = ci.Product.Id,
+                Name = ci.Product.Name,
+                ImageUrl = ci.Product.ImageUrl,
+                Price = ci.Product.Price,
+                Quantity = ci.Quantity,
+                TotalPrice = ci.Quantity * ci.Product.Price
+            }).ToList();
+
+            // Calculate total cart value
+            var totalValue = cartItems.Sum(ci => ci.TotalPrice);
+
+            return Ok(new
+            {
+                CartItems = cartItems,
+                TotalValue = totalValue
+            });
+        }
+
+
 
         // GET: api/Users
         [HttpGet]

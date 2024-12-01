@@ -7,6 +7,7 @@ interface CartItem {
 }
 
 interface User {
+  id: number,
   name: string;
   isLoggedIn: boolean;
   cartItems: CartItem[];

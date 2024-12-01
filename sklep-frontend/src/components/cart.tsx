@@ -1,36 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'; // For toast notifications
 import '../styles/CartPage.css';
-
+import api from '../api/api';
+import { useUser } from '../services/userContext'
 interface CartItem {
-    id: number;
+    productId: number;
     name: string;
     price: number;
     quantity: number;
+    totalPrice: number;
+    imageUrl: string;
+}
+
+interface CartResponse {
+    cartItems: CartItem[];
+    totalValue: number;
 }
 
 export default function CartPage() {
-    const [cartItems, setCartItems] = useState<CartItem[]>([
-        { id: 1, name: 'Monstera', price: 50, quantity: 2 },
-        { id: 2, name: 'Ficus', price: 30, quantity: 1 },
-        { id: 3, name: 'Succulent', price: 20, quantity: 3 },
-    ]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [totalValue, setTotalValue] = useState<number>(0);
+    const { user, setUser } = useUser();
+    const userId = user.id;
 
-    const handleQuantityChange = (id: number, newQuantity: number) => {
-        setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, quantity: newQuantity } : item
-            )
-        );
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const data = await api.fetchUserCart(userId);
+                setCartItems(data.cartItems);
+                setTotalValue(data.totalValue);
+            } catch (error) {
+                toast.error('Failed to fetch cart data.');
+            }
+        };
+
+        fetchCart();
+    }, [userId]);
+
+    const handleQuantityChange = async (productId: number, newQuantity: number) => {
+        if (newQuantity < 1) return; 
+        try {
+            await api.updateCartItem(userId, productId, newQuantity);
+            setCartItems((prevItems) =>
+                prevItems.map((item) =>
+                    item.productId === productId ? { ...item, quantity: newQuantity, totalPrice: item.price * newQuantity } : item
+                )
+            );
+            toast.success('Cart updated!');
+        } catch (error) {
+            toast.error('Failed to update item in cart.');
+        }
     };
 
-    const handleRemoveItem = (id: number) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    const handleRemoveItem = async (productId: number) => {
+        try {
+            await api.removeCartItem(userId, productId);
+            setCartItems((prevItems) => prevItems.filter((item) => item.productId !== productId));
+            toast.success('Item removed from cart!');
+        } catch (error) {
+            toast.error('Failed to remove item from cart.');
+        }
     };
-
-    const totalPrice = cartItems.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-    );
 
     return (
         <div className="basket-container">
@@ -39,10 +69,14 @@ export default function CartPage() {
                 <div>
                     <ul className="cart-list">
                         {cartItems.map((item) => (
-                            <li key={item.id} className="cart-item">
+                            <li key={item.productId} className="cart-item">
                                 <div className="item-details">
-                                    <p className="item-name">{item.name}</p>
-                                    <p className="item-price">{item.price} zl</p>
+                                    <img src={item.imageUrl} alt={item.name} className="item-image" />
+                                    <div className="item-info">
+                                        <p className="item-name">{item.name}</p>
+                                        <p className="item-price">{item.price} zł</p>
+                                        <p className="item-total">Total: {item.totalPrice} zł</p>
+                                    </div>
                                 </div>
                                 <div className="item-controls">
                                     <input
@@ -51,30 +85,28 @@ export default function CartPage() {
                                         value={item.quantity}
                                         onChange={(e) =>
                                             handleQuantityChange(
-                                                item.id,
+                                                item.productId,
                                                 parseInt(e.target.value, 10)
                                             )
                                         }
                                     />
                                     <button
-                                        onClick={() => handleRemoveItem(item.id)}
+                                        onClick={() => handleRemoveItem(item.productId)}
                                         className="remove-button"
                                     >
-                                        Usun
+                                        Usuń
                                     </button>
                                 </div>
                             </li>
                         ))}
                     </ul>
                     <div className="cart-summary">
-                        <h3>��czna kwota: {totalPrice.toFixed(2)} zl</h3>
-                        <button className="checkout-button">
-                            Przejdz do kasy
-                        </button>
+                        <h3>Całkowita kwota: {totalValue.toFixed(2)} zł</h3>
+                        <button className="checkout-button">Przejdź do kasy</button>
                     </div>
                 </div>
             ) : (
-                <p>Tw�j koszyk jest pusty.</p>
+                <p>Twój koszyk jest pusty.</p>
             )}
         </div>
     );

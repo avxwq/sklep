@@ -7,8 +7,6 @@
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
 
-        // Navigation properties
         public Cart? Cart { get; set; }
-        public ICollection<Order>? Orders { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import '../styles/Product.css'; // Import styles for the product page
-
+import { useUser } from '../services/userContext';
+import api from '../api/api';
+import { toast } from 'react-toastify';
 interface Category {
   id: number;
   name: string;
@@ -21,6 +23,19 @@ interface ProductListProps {
 }
 
 export default function Product({ products }: ProductListProps) {
+  const { user, setUser } = useUser();
+  const quantity = 1;
+
+  const handleAddToCart = async (product: Product) => {
+      try {
+      const data = await api.addToCart(user.id, product.id, quantity);
+          toast.success(`${product.name} has been added to your cart!`);
+      } catch (err: any) {
+          toast.error("Failed to add item to cart. Please try again.");
+          console.error("Error adding to cart");
+      }
+  };
+
   return (
     <div className="product-list-container">
       <ul className="product-list">
@@ -31,7 +46,8 @@ export default function Product({ products }: ProductListProps) {
               <h2 className="product-name">{product.name}</h2>
               <p className="product-description">{product.description}</p>
               <p className="product-price">{product.price.toFixed(2)} zł</p>
-              <button className="add-to-cart-button">Dodaj do koszyka</button>
+              <p className="product-quantity">In stock: {product.stockQuantity}</p>
+              <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">Dodaj do koszyka</button>
             </div>
           </li>
         ))}

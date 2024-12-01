@@ -56,8 +56,43 @@ export const api = {
     throw error;
   }
   },
-
-
+  addToCart: async (userId: number, productId: number, quantity: number) => {
+      try {
+        const response = await axiosInstance.post(`/users/${userId}/addToCart`, {
+          productId,
+          quantity
+      });
+        return response.data;
+      } catch (error: any) {
+        console.error('Error adding to cart', error.response?.data || error.message);
+        throw error;
+      }
+  },
+  fetchUserCart: async (userId: number) => {
+        try {
+            const response = await axiosInstance.get(`/users/${userId}/cart`);
+            return response.data;
+        } catch (error: any) {
+            console.error('Error fetching cart', error.response?.data || error.message);
+            throw error;
+        }
+    },
+    updateCartItem: async (userId: number, productId: number, quantity: number) => {
+        try {
+            await axiosInstance.put(`/users/${userId}/cart/${productId}`, { quantity });
+        } catch (error: any) {
+            console.error('Error updating cart', error.response?.data || error.message);
+            throw error;
+        }
+    },
+    removeCartItem: async (userId: number, productId: number) => {
+        try {
+            await axiosInstance.delete(`/users/${userId}/cart/${productId}`);
+        } catch (error: any) {
+            console.error('Error removing item from cart', error.response?.data || error.message);
+            throw error;
+        }
+    },
   fetchUserProfile: async (): Promise<User> => {
     setAuthHeader(); 
     try {
