@@ -124,6 +124,7 @@ namespace sklep.Controllers
             var user = await _context.Users
                 .Include(u => u.Cart)
                 .ThenInclude(c => c.CartItems)
+                .ThenInclude(ci => ci.Product) // Ensures Product is included
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
@@ -133,6 +134,9 @@ namespace sklep.Controllers
 
             if (cartItem == null)
                 return NotFound("Product not found in cart.");
+
+            if (cartItem.Product == null)
+                return NotFound("Product details not found.");
 
             cartItem.Quantity = quantity;
 
@@ -147,6 +151,7 @@ namespace sklep.Controllers
                 TotalPrice = cartItem.Quantity * cartItem.Product.Price
             });
         }
+
 
         [HttpDelete("{userId}/cart/{productId}")]
         public async Task<IActionResult> RemoveCartItem(int userId, int productId)

@@ -50,7 +50,7 @@ export const api = {
       email,
       password,
     });
-    return response.data; // Backend zwróci token
+    return response.data; 
   } catch (error: any) {
     console.error('Error logging in user:', error.response?.data || error.message);
     throw error;
@@ -78,12 +78,17 @@ export const api = {
         }
     },
     updateCartItem: async (userId: number, productId: number, quantity: number) => {
-        try {
-            await axiosInstance.put(`/users/${userId}/cart/${productId}`, { quantity });
-        } catch (error: any) {
-            console.error('Error updating cart', error.response?.data || error.message);
-            throw error;
-        }
+    try {
+        const response = await axiosInstance.put(`/users/${userId}/cart/${productId}`, quantity);
+        
+        console.log('Cart item updated:', response.data);
+        
+        return response.data;
+    } catch (error: any) {
+        console.error('Error updating cart', error.response?.data || error.message);
+        
+        throw error;
+    }
     },
     removeCartItem: async (userId: number, productId: number) => {
         try {
@@ -93,6 +98,30 @@ export const api = {
             throw error;
         }
     },
+    getOrders: async (userId: number, productId: number) => {
+        try {
+            const response = await axiosInstance.get(`/users/${userId}/orders`);
+            return response.data;
+        } catch (error: any) {
+            console.error('Error removing item from cart', error.response?.data || error.message);
+            throw error;
+        }
+    },
+    const placeOrder = async (userId: number) => {
+    try {
+        const response = await axios.put(`/users/${userId}/placeOrder`);
+        
+        if (response.status === 200) {
+            console.log('Order placed successfully:', response.data);
+        } else {
+            console.error('Error placing order:', response.data);
+        }
+    } catch (error: any) {
+        console.error('Error placing order:', error.response?.data || error.message);
+    }
+  },
+
+
   fetchUserProfile: async (): Promise<User> => {
     setAuthHeader(); 
     try {
