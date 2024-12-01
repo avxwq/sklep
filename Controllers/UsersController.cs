@@ -110,49 +110,71 @@ namespace sklep.Controllers
                 cartItem.Quantity += productDto.Quantity;
             }
 
-            product.StockQuantity -= productDto.Quantity;
-
             await _context.SaveChangesAsync();
 
             return Ok("Item added to cart.");
         }
 
-        [HttpGet("{userId}/cart")]
-        public async Task<IActionResult> GetCart(int userId)
+        [HttpPut("{userId}/cart/{productId}")]
+        public async Task<IActionResult> UpdateCartItem(int userId, int productId, [FromBody] int quantity)
         {
-            // Retrieve the user and include their cart with cart items and products
+            if (quantity < 1)
+                return BadRequest("Quantity must be at least 1.");
+
             var user = await _context.Users
                 .Include(u => u.Cart)
                 .ThenInclude(c => c.CartItems)
-                .ThenInclude(ci => ci.Product)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
                 return NotFound("User not found.");
 
-            if (user.Cart == null || !user.Cart.CartItems.Any())
-                return Ok(new { Message = "Cart is empty", CartItems = new List<object>() });
+            var cartItem = user.Cart?.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
 
-            // Map cart items to a DTO for the frontend
-            var cartItems = user.Cart.CartItems.Select(ci => new
-            {
-                ProductId = ci.Product.Id,
-                Name = ci.Product.Name,
-                ImageUrl = ci.Product.ImageUrl,
-                Price = ci.Product.Price,
-                Quantity = ci.Quantity,
-                TotalPrice = ci.Quantity * ci.Product.Price
-            }).ToList();
+            if (cartItem == null)
+                return NotFound("Product not found in cart.");
 
-            // Calculate total cart value
-            var totalValue = cartItems.Sum(ci => ci.TotalPrice);
+            // Update the quantity and recalculate the total price
+            cartItem.Quantity = quantity;
 
+            // Save the changes to the database
+            await _context.SaveChangesAsync();
+
+            // Return the updated cart item
             return Ok(new
             {
-                CartItems = cartItems,
-                TotalValue = totalValue
+                ProductId = cartItem.ProductId,
+                Name = cartItem.Product.Name,
+                Price = cartItem.Product.Price,
+                Quantity = cartItem.Quantity,
+                TotalPrice = cartItem.Quantity * cartItem.Product.Price // Recalculate total price
             });
         }
+
+        [HttpDelete("{userId}/cart/{productId}")]
+        public async Task<IActionResult> RemoveCartItem(int userId, int productId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Cart)
+                .ThenInclude(c => c.CartItems)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound("User not found.");
+
+            var cartItem = user.Cart?.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+
+            if (cartItem == null)
+                return NotFound("Product not found in cart.");
+
+            user.Cart.CartItems.Remove(cartItem);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Item removed from cart." });
+        }
+
+
 
 
 
