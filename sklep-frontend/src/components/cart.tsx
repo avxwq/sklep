@@ -22,6 +22,8 @@ export default function CartPage() {
     const [totalValue, setTotalValue] = useState<number>(0);
     const { user, setUser } = useUser();
     const userId = user.id;
+    const [loading, setLoading] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -49,6 +51,30 @@ export default function CartPage() {
             toast.success('Cart updated!');
         } catch (error) {
             toast.error('Failed to update item in cart.');
+        }
+    };
+
+    const placeOrder = async () => {
+        console.log(userId);
+        if (!userId) {
+            setErrorMessage('User not logged in');
+            return;
+        }
+        
+        setLoading(true);
+        setErrorMessage(null);
+
+        try {
+            const response = await api.placeOrder(userId);
+            toast.success('Order placed successfully!');
+            const data = await api.fetchUserCart(userId);
+            setCartItems(data.cartItems);
+            setTotalValue(data.totalValue);
+        } catch (error: any) {
+            console.error('Error placing order:', error.response?.data || error.message);
+            setErrorMessage('Error placing order. Please try again later.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -102,7 +128,7 @@ export default function CartPage() {
                     </ul>
                     <div className="cart-summary">
                         <h3>Całkowita kwota: {totalValue.toFixed(2)} zł</h3>
-                        <button className="checkout-button">Przejdź do kasy</button>
+                        <button onClick={placeOrder} disabled={loading} className="checkout-button">Złóż zamówienie</button>
                     </div>
                 </div>
             ) : (

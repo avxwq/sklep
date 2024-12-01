@@ -27,7 +27,7 @@ namespace sklep.Controllers
             return await _context.Orders.ToListAsync();
         }
 
-        [HttpPost("{userId}/placeOrder")]
+        [HttpPost("{userId}/placeorder")]
         public async Task<IActionResult> PlaceOrder(int userId)
         {
             var user = await _context.Users

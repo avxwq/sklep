@@ -98,29 +98,25 @@ export const api = {
             throw error;
         }
     },
-    getOrders: async (userId: number, productId: number) => {
+    getOrders: async (userId: number) => {
         try {
-            const response = await axiosInstance.get(`/users/${userId}/orders`);
+            const response = await axiosInstance.get(`/orders/${userId}/orders`);
             return response.data;
         } catch (error: any) {
             console.error('Error removing item from cart', error.response?.data || error.message);
             throw error;
         }
     },
-    placeOrder: async (userId: number) => {
+  placeOrder: async (userId: number) => {
     try {
-        const response = await axios.put(`/users/${userId}/placeOrder`);
-        
-        if (response.status === 200) {
-            console.log('Order placed successfully:', response.data);
-        } else {
-            console.error('Error placing order:', response.data);
-        }
+        const response = await axiosInstance.post(`/orders/${userId}/placeorder`, {
+      });
+      return response;
     } catch (error: any) {
         console.error('Error placing order:', error.response?.data || error.message);
+        throw error; 
     }
-    },
-
+  },
   fetchUserProfile: async (): Promise<User> => {
     setAuthHeader(); 
     try {
