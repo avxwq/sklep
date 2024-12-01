@@ -29,6 +29,16 @@ interface User {
 }
 
 export const api = {
+  getUser: async (userId: number) => {
+    try {
+      const response = await axiosInstance.get(`/users/${userId}`);
+      return response.data; 
+    } catch (error: any) {
+      console.error('Error getting user:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
   registerUser: async (username: string, email: string, password: string): Promise<User> => {
     try {
       const response: AxiosResponse<User> = await axiosInstance.post('/users/register', {
@@ -115,16 +125,6 @@ export const api = {
     } catch (error: any) {
         console.error('Error placing order:', error.response?.data || error.message);
         throw error; 
-    }
-  },
-  fetchUserProfile: async (): Promise<User> => {
-    setAuthHeader(); 
-    try {
-      const response: AxiosResponse<User> = await axiosInstance.get('/users/profile');
-      return response.data;
-    } catch (error: any) {
-      console.error('Error fetching user profile:', error.response?.data || error.message);
-      throw error;
     }
   },
 
