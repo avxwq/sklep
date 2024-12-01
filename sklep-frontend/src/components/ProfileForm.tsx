@@ -42,7 +42,7 @@ interface User2 {
   username: string;
   email: string;
   passwordHash: string;
-  cart?: Cart; // Optional, as it can be null
+  cart?: Cart; 
   orders: Order[];
 }
 
@@ -95,7 +95,7 @@ export default function Profile() {
                                 onChange={handleInputChange}
                             />
                         ) : (
-                            <p>{user.name}</p>
+                            <p>Jan Kowalski</p>
                         )}
                     </div>
                     <div className="profile-field">
@@ -108,7 +108,7 @@ export default function Profile() {
                                 onChange={handleInputChange}
                             />
                         ) : (
-                            <p>{user.email}</p>
+                            <p>testowymail@example.com</p>
                         )}
                     </div>
                     <div className="profile-field">
@@ -121,7 +121,7 @@ export default function Profile() {
                                 onChange={handleInputChange}
                             />
                         ) : (
-                            <p>{user.address}</p>
+                            <p>Wiejska 45A</p>
                         )}
                     </div>
                     <div className="profile-field">
@@ -134,11 +134,11 @@ export default function Profile() {
                                 onChange={handleInputChange}
                             />
                         ) : (
-                            <p>{user.phone}</p>
+                            <p>+48 123 456 789</p>
                         )}
                     </div>
 
-                    <div className="profile-actions">
+                    {/* <div className="profile-actions">
                         {isEditing ? (
                             <button onClick={handleSave} className="save-button">
                                 Zapisz
@@ -151,7 +151,7 @@ export default function Profile() {
                                 Edytuj
                             </button>
                         )}
-                    </div>
+                    </div> */}
                 </div>
             ) : (
                 <p>Ładowanie danych użytkownika...</p>
