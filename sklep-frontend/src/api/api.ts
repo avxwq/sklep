@@ -107,7 +107,7 @@ export const api = {
             throw error;
         }
     },
-    const placeOrder = async (userId: number) => {
+    placeOrder: async (userId: number) => {
     try {
         const response = await axios.put(`/users/${userId}/placeOrder`);
         
@@ -119,8 +119,7 @@ export const api = {
     } catch (error: any) {
         console.error('Error placing order:', error.response?.data || error.message);
     }
-  },
-
+    },
 
   fetchUserProfile: async (): Promise<User> => {
     setAuthHeader(); 
