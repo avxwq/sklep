@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/ProfilePage.css";
+import api from "../api/api";
+import { useUser } from "../services/userContext";
 
 interface User {
     name: string;
@@ -8,26 +10,58 @@ interface User {
     phone: string;
 }
 
+interface CartItem {
+  id: number;
+  name: string;
+  quantity?: number;
+}
+
+interface OrderItem {
+  productId: number;
+  name: string;
+  quantity: number;
+  price: number;
+  totalPrice: number;
+}
+
+interface Order {
+  id: number;
+  orderDate: string;
+  deliveryStatus: string;
+  totalPrice: number;
+  items: OrderItem[];
+}
+
+interface Cart {
+  id: number;
+  cartItems: CartItem[];
+}
+
+interface User2 {
+  id: number;
+  username: string;
+  email: string;
+  passwordHash: string;
+  cart?: Cart; // Optional, as it can be null
+  orders: Order[];
+}
+
 export default function Profile() {
-    const [user, setUser] = useState<User | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [formData, setFormData] = useState<User | null>(null);
+    const { user, setUser } = useUser();
 
     useEffect(() => {
-        // Za≥Ûømy, øe dane uøytkownika sπ pobierane z API
-        const fetchUserData = async () => {
-            const fakeUser: User = {
-                name: "Jan Kowalski",
-                email: "jan.kowalski@example.com",
-                address: "Ul. Zielona 15, Warszawa",
-                phone: "+48 123 456 789",
-            };
-            setUser(fakeUser);
-            setFormData(fakeUser);
-        };
+    const fetchUser = async () => {
+        try {
+            const data = await api.getUser(user.id);
+        } catch (err : any) {
+            console.error('Failed to fetch data');
+        }
+    };
 
-        fetchUserData();
-    }, []);
+    fetchUser();
+}, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (formData) {
@@ -120,7 +154,7 @@ export default function Profile() {
                     </div>
                 </div>
             ) : (
-                <p>£adowanie danych uøytkownika...</p>
+                <p>≈Åadowanie danych u≈ºytkownika...</p>
             )}
         </div>
     );

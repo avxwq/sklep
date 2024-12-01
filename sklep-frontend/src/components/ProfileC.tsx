@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useUser } from "../services/userContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
-import { useEffect } from "react";
 
 interface CartItem {
   id: number;
@@ -51,17 +50,7 @@ export default function ProfileC() {
     navigate("/");
   };
 
-    useEffect(() => {
-    const fetchUser = async () => {
-        try {
-            const data = await api.getUser(userId);
-        } catch (err : any) {
-            console.error('Failed to fetch data');
-        }
-    };
 
-    fetchUser();
-}, []);
 
   return (
     <div className="profile-container">
