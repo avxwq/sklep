@@ -41,7 +41,7 @@ export default function CategoryList({ onCategorySelect }: CategoryListProps) {
 
   return (
     <div className="category-list-container">
-      <h1>Categories</h1>
+      <h1>Kategorie</h1>
       <ul className="category-list">
           {categories.map((category) => (
           <li 

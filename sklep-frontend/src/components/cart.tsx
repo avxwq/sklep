@@ -32,7 +32,7 @@ export default function CartPage() {
                 setCartItems(data.cartItems);
                 setTotalValue(data.totalValue);
             } catch (error) {
-                toast.error('Failed to fetch cart data.');
+                console.error('Failed to fetch data');
             }
         };
 
@@ -66,7 +66,7 @@ export default function CartPage() {
 
         try {
             const response = await api.placeOrder(userId);
-            toast.success('Order placed successfully!');
+            toast.success('Zamówienie złożone pomyślnie!');
             const data = await api.fetchUserCart(userId);
             setCartItems(data.cartItems);
             setTotalValue(data.totalValue);

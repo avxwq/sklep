@@ -16,7 +16,7 @@ export default function LoginForm() {
         setError('');
         try {
             const data = await api.loginUser(email, password);
-            setSuccess('Login successful');
+            setSuccess('Zalogowano się pomyślnie!');
             localStorage.setItem('token', data.token);
             setUser((prev) => ({
                 ...prev,isLoggedIn:true,
@@ -26,7 +26,7 @@ export default function LoginForm() {
                  id: data.userId,
             }));
        } catch (err: any) {
-            setError(err.response?.data?.message || 'Login failed');
+            setError(err.response?.data?.message || 'Nie udało się zalogować!');
         }
     };
 

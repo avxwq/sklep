@@ -34,7 +34,7 @@ export default function OrderHistory() {
                 setOrders(data);
             } catch (error) {
                 setError('Failed to fetch order data.');
-                toast.error('Failed to fetch order data.');
+                toast.error('Nie udało się pobrać danych.');
             }
         };
 
@@ -45,19 +45,19 @@ export default function OrderHistory() {
 
     return (
         <div className="order-history-container">
-            <h2 className="order-history-title">Order History</h2>
+            <h2 className="order-history-title">Historia zamówień</h2>
             {orders.length === 0 ? (
-                <p className="order-history-empty">No orders found.</p>
+                <p className="order-history-empty">Brak zamówień.</p>
             ) : (
                 <ul className="order-list">
                     {orders.map((order) => (
                         <li key={order.id} className="order-card">
-                            <h3>Order #{order.id}</h3>
-                            <p><strong>Date:</strong> {new Date(order.orderDate).toLocaleDateString()}</p>
+                            <h3>Zamówienie nr:{order.id}</h3>
+                            <p><strong>Data:</strong> {new Date(order.orderDate).toLocaleDateString()}</p>
                             <p><strong>Status:</strong> {order.deliveryStatus}</p>
-                            <p><strong>Total:</strong> ${order.totalPrice.toFixed(2)}</p>
+                            <p><strong>Cena razem:</strong> ${order.totalPrice.toFixed(2)}</p>
                             <div className="order-items">
-                                <h4>Items:</h4>
+                                <h4>Produkty:</h4>
                                 <ul>
                                     {order.items.map((item) => (
                                         <li key={item.productId}>

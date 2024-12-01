@@ -2,9 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';  // Importujemy Link do nawigacji
 import '../styles/topnav.css'
 import { useUser } from '../services/userContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function TopNavbar() {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const navigate = useNavigate();
+
+  const handleLogout = (): void => {
+      localStorage.clear();
+      setUser({ id: 0, name: "", isLoggedIn: false, cartItems: [], token: undefined });
+
+      navigate('/'); 
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -39,7 +49,7 @@ export default function TopNavbar() {
             Koszyk
           </Link>
           {user.isLoggedIn ? (
-          <Link to="/logout" className="navbar-button">
+          <Link onClick={handleLogout} to="/" className="navbar-button">
             Wyloguj się
           </Link>
           ) : (
