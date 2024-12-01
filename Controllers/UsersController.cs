@@ -134,20 +134,17 @@ namespace sklep.Controllers
             if (cartItem == null)
                 return NotFound("Product not found in cart.");
 
-            // Update the quantity and recalculate the total price
             cartItem.Quantity = quantity;
 
-            // Save the changes to the database
             await _context.SaveChangesAsync();
 
-            // Return the updated cart item
             return Ok(new
             {
                 ProductId = cartItem.ProductId,
                 Name = cartItem.Product.Name,
                 Price = cartItem.Product.Price,
                 Quantity = cartItem.Quantity,
-                TotalPrice = cartItem.Quantity * cartItem.Product.Price // Recalculate total price
+                TotalPrice = cartItem.Quantity * cartItem.Product.Price
             });
         }
 
@@ -174,10 +171,39 @@ namespace sklep.Controllers
             return Ok(new { Message = "Item removed from cart." });
         }
 
+        [HttpGet("{userId}/cart")]
+        public async Task<IActionResult> GetCart(int userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Cart)
+                .ThenInclude(c => c.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
+            if (user == null)
+                return NotFound("User not found.");
 
+            if (user.Cart == null || !user.Cart.CartItems.Any())
+                return Ok(new { Message = "Cart is empty", CartItems = new List<object>() });
 
+            var cartItems = user.Cart.CartItems.Select(ci => new
+            {
+                ProductId = ci.Product.Id,
+                Name = ci.Product.Name,
+                ImageUrl = ci.Product.ImageUrl,
+                Price = ci.Product.Price,
+                Quantity = ci.Quantity,
+                TotalPrice = ci.Quantity * ci.Product.Price
+            }).ToList();
 
+            var totalValue = cartItems.Sum(ci => ci.TotalPrice);
+
+            return Ok(new
+            {
+                CartItems = cartItems,
+                TotalValue = totalValue
+            });
+        }
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
