@@ -5,6 +5,7 @@ import ContactPage from '../pages/ContactPage';
 import ProductList from '../pages/ProductPage';
 import ProductPage from '../pages/ProductPage';
 import CartPage from '../components/cart';
+import ProfilePage from '../pages/ProfilePage';
 
 const routes: RouteObject[] = [
   {
@@ -27,6 +28,10 @@ const routes: RouteObject[] = [
         path: '/cart',
         element: <CartPage />,
   },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
+  }
 ];
 
 export default routes;
