@@ -4,56 +4,67 @@ namespace sklep.Models
 {
     public class SklepContext : DbContext
     {
-        public SklepContext(DbContextOptions<SklepContext> options): base(options)
+        public SklepContext(DbContextOptions<SklepContext> options) : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Categories: Create 10 categories
-            var categories = new[]
+            // Kategorie
+            var categories = new List<Category>
             {
-                new Category { Id = 1, Name = "Indoor Plants" },
-                new Category { Id = 2, Name = "Outdoor Plants" },
-                new Category { Id = 3, Name = "Succulents" },
-                new Category { Id = 4, Name = "Herbs" },
-                new Category { Id = 5, Name = "Trees" },
-                new Category { Id = 6, Name = "Flowers" },
-                new Category { Id = 7, Name = "Fruits" },
-                new Category { Id = 8, Name = "Vegetables" },
-                new Category { Id = 9, Name = "Air Purifying Plants" },
-                new Category { Id = 10, Name = "Tropical Plants" }
+                new Category { Id = 1, Name = "Rośliny doniczkowe" },
+                new Category { Id = 2, Name = "Rośliny ogrodowe" },
+                new Category { Id = 3, Name = "Sukulenty" },
+                new Category { Id = 4, Name = "Zioła" },
+                new Category { Id = 5, Name = "Kwiaty cięte" },
+                new Category { Id = 6, Name = "Drzewka bonsai" }
             };
+
             modelBuilder.Entity<Category>().HasData(categories);
 
-            // Products: Create 100 products with the same ImageUrl pattern
-            var products = Enumerable.Range(1, 100).Select(i => new Product
+            // Konfiguracja relacji
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId);
+
+            // Produkty
+            var plantNames = new List<string>
             {
-                Id = i,
-                Name = $"Product {i}",
-                ImageUrl = "http://localhost:5000/productimg/fikus.jpg",
-                Price = decimal.Round(10 + (decimal)(i % 20), 2),  // Random prices between 10 and 30
-                StockQuantity = (i % 10) + 1,  // Stock quantity between 1 and 10
-                Description = $"Description for product {i}",
-                CategoryId = categories[i % categories.Length].Id // Assign product to one of the 10 categories
-            }).ToArray();
+                "Monstera deliciosa", "Fikus benjamina", "Sansewieria", "Dracena marginata",
+                "Zamiokulkas zamiolistny", "Aloes zwyczajny", "Kaktus opuncja", "Kalanchoe",
+                "Bonsai fikus ginseng", "Rozmaryn", "Bazylia", "Lawenda", "Mięta pieprzowa",
+                "Chryzantema", "Róża", "Tulipan", "Stokrotka", "Bluszcz pospolity", "Paprotka",
+                "Anturium", "Orchidea", "Palma areka", "Juka", "Liwia", "Kroton",
+                "Skrzydłokwiat", "Grubosz drzewiasty", "Eszeweria", "Haworcja", "Szałwia lekarska",
+                "Tymianek", "Oregano", "Begonia", "Geranium", "Storczyk falenopsis",
+                "Kaktus gwiazda betlejemska", "Hibiskus", "Azalia", "Magnolia", "Drzewko cytrynowe",
+                "Drzewko oliwne", "Fiołek afrykański", "Pelargonia", "Amarylis", "Asparagus",
+                "Szeflera", "Papryczka chili", "Rozplenica japońska", "Kocanka włochata"
+            };
+
+            var imageUrls = new[]
+            {
+                "http://localhost:5000/productimg/fikus.jpg",
+                "http://localhost:5000/productimg/monstera.jpg",
+                "http://localhost:5000/productimg/sansevieria.jpg"
+            };
+
+            var products = plantNames.Select((name, index) => new Product
+            {
+                Id = index + 1,
+                Name = name,
+                ImageUrl = imageUrls[index % imageUrls.Length],
+                Price = 15 + (index * 5 % 185), // Cena w zakresie 15-200
+                StockQuantity = 1 + (index * 3 % 50), // Ilość w zakresie 1-50
+                Description = $"Piękna roślina: {name}. Idealna do domu lub ogrodu.",
+                CategoryId = (index % categories.Count) + 1 // Cykl kategorii
+            }).ToList();
 
             modelBuilder.Entity<Product>().HasData(products);
-
-            // Users: Adding some sample users for demonstration (optional)
-            modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Username = "john_doe", Email = "john@example.com", PasswordHash = "hashedpassword1" },
-                new User { Id = 2, Username = "jane_doe", Email = "jane@example.com", PasswordHash = "hashedpassword2" },
-                new User { Id = 3, Username = "alex_smith", Email = "alex@example.com", PasswordHash = "hashedpassword3" }
-            );
-
-            base.OnModelCreating(modelBuilder);
         }
 
-        private string GetRandomProductName()
-        {
-            var productNames = new[] { "Aloe Vera", "Rose", "Basil", "Spider Plant", "Tomato Plant", "Tulip", "Lavender", "Cactus", "Fern", "Mint" };
-            return productNames[new Random().Next(productNames.Length)];
-        }
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
@@ -61,6 +72,5 @@ namespace sklep.Models
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderItem> OrderItems { get; set; } = null!;
-
     }
 }
