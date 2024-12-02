@@ -48,9 +48,9 @@ export default function CartPage() {
                     item.productId === productId ? { ...item, quantity: newQuantity, totalPrice: item.price * newQuantity } : item
                 )
             );
-            toast.success('Cart updated!');
+            toast.success('Koszyk zaktualizowany!');
         } catch (error) {
-            toast.error('Failed to update item in cart.');
+            toast.error('Nie udało się zaktualizować koszyka.');
         }
     };
 
@@ -87,9 +87,9 @@ export default function CartPage() {
         try {
             await api.removeCartItem(userId, productId);
             setCartItems((prevItems) => prevItems.filter((item) => item.productId !== productId));
-            toast.success('Item removed from cart!');
+            toast.success('Przedmiot usunęty z koszyka.');
         } catch (error) {
-            toast.error('Failed to remove item from cart.');
+            toast.error('Nie udało się usunąc z koszyka.');
         }
     };
 
@@ -106,7 +106,7 @@ export default function CartPage() {
                                     <div className="item-info">
                                         <p className="item-name">{item.name}</p>
                                         <p className="item-price">{item.price} zł</p>
-                                        <p className="item-total">Total: {item.totalPrice} zł</p>
+                                        <p className="item-total">Cena: {item.totalPrice} zł</p>
                                     </div>
                                 </div>
                                 <div className="item-controls">

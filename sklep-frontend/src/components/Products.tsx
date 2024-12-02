@@ -29,9 +29,9 @@ export default function Product({ products }: ProductListProps) {
   const handleAddToCart = async (product: Product) => {
       try {
       const data = await api.addToCart(user.id, product.id, quantity);
-          toast.success(`${product.name} has been added to your cart!`);
+          toast.success(`${product.name} zostało dodane do koszyka!`);
       } catch (err: any) {
-          toast.error("Failed to add item to cart. Please try again.");
+          toast.error("Nie udało się dodać do koszyka");
           console.error("Error adding to cart");
       }
   };
@@ -46,7 +46,7 @@ export default function Product({ products }: ProductListProps) {
               <h2 className="product-name">{product.name}</h2>
               <p className="product-description">{product.description}</p>
               <p className="product-price">{product.price.toFixed(2)} zł</p>
-              <p className="product-quantity">In stock: {product.stockQuantity}</p>
+              <p className="product-quantity">W magazynie: {product.stockQuantity}</p>
               <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">Dodaj do koszyka</button>
             </div>
           </li>
