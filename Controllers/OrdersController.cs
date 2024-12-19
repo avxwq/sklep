@@ -61,7 +61,7 @@ namespace sklep.Controllers
                 UserId = userId,
                 OrderDate = DateTime.UtcNow,
                 TotalPrice = totalPrice,
-                DeliveryStatus = "Pending",
+                DeliveryStatus = "W trakcie",
                 OrderItems = user.Cart.CartItems.Select(ci => new OrderItem
                 {
                     ProductId = ci.ProductId,

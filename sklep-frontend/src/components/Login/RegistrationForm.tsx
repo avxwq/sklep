@@ -16,7 +16,7 @@ export default function RegisterForm() {
 
         try {
             const data = await api.registerUser(username, email, password);
-            setSuccess(`User registered: ${data.username}`);
+            setSuccess(`User registered`);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Registration failed');
         }
